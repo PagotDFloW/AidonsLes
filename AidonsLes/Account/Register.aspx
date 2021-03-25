@@ -1,4 +1,4 @@
-﻿<%@ Page Title="S'inscrire" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="AidonsLes.Account.Register" %>
+<%@ Page Title="S'inscrire" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="AidonsLes.Account.Register" %>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <h2><%: Title %>.</h2>
@@ -7,23 +7,47 @@
     </p>
 
     <div class="form-horizontal">
-        <h4>Créer un nouveau compte</h4>
+        <h4>Inscrivez vous</h4>
         <hr />
-        <asp:ValidationSummary runat="server" CssClass="text-danger" />
+        <asp:ValidationSummary runat="server" CssClass="text-danger" style="margin-bottom: 17px" />
         <div class="form-group">
-            <asp:Label runat="server" AssociatedControlID="Email" CssClass="col-md-2 control-label" ID="Label1">Adresse Email</asp:Label>
+
+            <asp:Label ID="Label1" runat="server" AssociatedControlID="Nom" CssClass="col-md-2 control-label" Text="Nom"></asp:Label>
+            <div class="col-md-10">
+            <br />
+            <asp:TextBox ID="Nom" runat="server" CssClass="form-control" Height="16px"></asp:TextBox>
+            <br />
+            <br />
+        </div>
+        </div>
+        <div class="form-group">
+
+            <asp:Label ID="Label2" runat="server" AssociatedControlID="Prénom" CssClass="col-md-2 control-label" Text="Prénom"></asp:Label>
+            <div class="col-md-10">
+            <br />
+            <asp:TextBox ID="Prénom" runat="server" CssClass="form-control" Height="16px"></asp:TextBox>
+            </div>
+            </div>
+            <br />
+            <br />
+
+            <div class="form-group">
+            <asp:Label runat="server" AssociatedControlID="Email" CssClass="col-md-2 control-label">Adresse mail</asp:Label>
             <div class="col-md-10">
                 <asp:TextBox runat="server" ID="Email" CssClass="form-control" TextMode="Email" />
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="Email"
                     CssClass="text-danger" ErrorMessage="Le champ d’adresse de messagerie est obligatoire." />
+                <br />
             </div>
-        </div>
+
+            </div>
         <div class="form-group">
             <asp:Label runat="server" AssociatedControlID="Password" CssClass="col-md-2 control-label">Mot de passe</asp:Label>
             <div class="col-md-10">
                 <asp:TextBox runat="server" ID="Password" TextMode="Password" CssClass="form-control" />
                 <asp:RequiredFieldValidator runat="server" ControlToValidate="Password"
                     CssClass="text-danger" ErrorMessage="Le champ mot de passe est requis." />
+                <br />
             </div>
         </div>
         <div class="form-group">
@@ -34,6 +58,7 @@
                     CssClass="text-danger" Display="Dynamic" ErrorMessage="Le champ confirmer le mot de passe est requis." />
                 <asp:CompareValidator runat="server" ControlToCompare="Password" ControlToValidate="ConfirmPassword"
                     CssClass="text-danger" Display="Dynamic" ErrorMessage="Le mot de passe et le mot de passe de confirmation ne correspondent pas." />
+                <br />
             </div>
         </div>
         <div class="form-group">
