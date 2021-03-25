@@ -38,6 +38,7 @@ namespace AidonsLes.Account
                 switch (result)
                 {
                     case SignInStatus.Success:
+                        Session["login"] = Email.Text;
                         IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
                         break;
                     case SignInStatus.LockedOut:

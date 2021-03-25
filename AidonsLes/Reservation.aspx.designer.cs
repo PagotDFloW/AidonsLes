@@ -11,7 +11,7 @@ namespace AidonsLes
 {
 
 
-    public partial class About
+    public partial class Reservation
     {
     }
 }
