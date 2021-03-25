@@ -1,7 +1,7 @@
 <%@ Page Title="S'inscrire" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="AidonsLes.Account.Register" %>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-    <h2><%: Title %>.</h2>
+    <h2><%: Title %></h2>
     <p class="text-danger">
         <asp:Literal runat="server" ID="ErrorMessage" />
     </p>
@@ -14,19 +14,23 @@
 
             <asp:Label ID="Label1" runat="server" AssociatedControlID="Nom" CssClass="col-md-2 control-label" Text="Nom"></asp:Label>
             <div class="col-md-10">
-            <br />
-            <asp:TextBox ID="Nom" runat="server" CssClass="form-control" Height="16px"></asp:TextBox>
-            <br />
-            <br />
-        </div>
+                <asp:TextBox runat="server" ID="Nom" CssClass="form-control" />
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="Email"
+                    CssClass="text-danger" ErrorMessage="Le champ d’adresse de messagerie est obligatoire." ID="RequiredFieldValidator2" />
+                <br />
+            </div>
+
         </div>
         <div class="form-group">
 
-            <asp:Label ID="Label2" runat="server" AssociatedControlID="Prénom" CssClass="col-md-2 control-label" Text="Prénom"></asp:Label>
+            <asp:Label ID="Label2" runat="server" AssociatedControlID="Prenom" CssClass="col-md-2 control-label" Text="Prénom"></asp:Label>
             <div class="col-md-10">
-            <br />
-            <asp:TextBox ID="Prénom" runat="server" CssClass="form-control" Height="16px"></asp:TextBox>
+                <asp:TextBox runat="server" ID="Prenom" CssClass="form-control" />
+                <asp:RequiredFieldValidator runat="server" ControlToValidate="Email"
+                    CssClass="text-danger" ErrorMessage="Le champ d’adresse de messagerie est obligatoire." ID="RequiredFieldValidator1" />
+                <br />
             </div>
+
             </div>
             <br />
             <br />
