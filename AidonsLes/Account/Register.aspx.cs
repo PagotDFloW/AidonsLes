@@ -15,7 +15,7 @@ namespace AidonsLes.Account
         {
             var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var signInManager = Context.GetOwinContext().Get<ApplicationSignInManager>();
-            var user = new ApplicationUser() { UserName = Nom.Text + Prenom.Text, Email = Email.Text };
+            var user = new ApplicationUser() { UserName = Prenom.Text +" "+Nom.Text , Email = Email.Text };
             IdentityResult result = manager.Create(user, Password.Text);
             if (result.Succeeded)
             {
