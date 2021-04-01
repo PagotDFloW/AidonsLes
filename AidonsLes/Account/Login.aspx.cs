@@ -33,12 +33,12 @@ namespace AidonsLes.Account
 
                 // Ceci ne compte pas les échecs de connexion pour le verrouillage du compte
                 // Pour que les échecs de mot passe déclenchent le verrouillage, utilisez shouldLockout: true
-                var result = signinManager.PasswordSignIn(Email.Text, Password.Text, RememberMe.Checked, shouldLockout: false);
+                var result = signinManager.PasswordSignIn(login.Text, Password.Text, RememberMe.Checked, shouldLockout: false);
 
                 switch (result)
                 {
                     case SignInStatus.Success:
-                        Session["login"] = Email.Text;
+                        Session["login"] = login.Text;
                         IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
                         break;
                     case SignInStatus.LockedOut:
