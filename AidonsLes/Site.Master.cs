@@ -44,7 +44,7 @@ namespace AidonsLes
                 }
                 Response.Cookies.Set(responseCookie);
             }
-
+            Session["login"] = Context.User.Identity.GetUserName();
             Page.PreLoad += master_Page_PreLoad;
         }
 
