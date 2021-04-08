@@ -3,13 +3,13 @@
 <%@ Register Src="~/Account/OpenAuthProviders.ascx" TagPrefix="uc" TagName="OpenAuthProviders" %>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-    <h2><%: Title %>.</h2>
+    <h2>Connexion</h2>
 
     <div class="row">
         <div class="col-md-8">
             <section id="loginForm">
                 <div class="form-horizontal">
-                    <h4>Connectez-vous à l'aide d'un compte local.</h4>
+                    <h4>Connectez-vous</h4>
                     <hr />
                     <asp:PlaceHolder runat="server" ID="ErrorMessage" Visible="false">
                         <p class="text-danger">
@@ -17,11 +17,12 @@
                         </p>
                     </asp:PlaceHolder>
                     <div class="form-group">
-                        <asp:Label runat="server" AssociatedControlID="login" CssClass="col-md-2 control-label">Messagerie</asp:Label>
+                        <asp:Label runat="server" AssociatedControlID="Email" CssClass="col-md-2 control-label">Adresse mail</asp:Label>
                         <div class="col-md-10">
-                            <asp:TextBox runat="server" ID="login" CssClass="form-control" />
-                            <asp:RequiredFieldValidator runat="server" ControlToValidate="login"
+                            <asp:TextBox runat="server" ID="Email" CssClass="form-control" TextMode="Email" />
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="Email"
                                 CssClass="text-danger" ErrorMessage="Le champ d’adresse de messagerie est obligatoire." />
+                            <asp:CustomValidator runat="server" ControlToValidate="Email" ErrorMessage="Cet utilisateur est inconnu" ValidateEmptyText="true" OnServerValidate="ValiderLogin" Display="dynamic"/>
                         </div>
                     </div>
                     <div class="form-group">
