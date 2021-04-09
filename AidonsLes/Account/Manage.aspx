@@ -3,6 +3,61 @@
 <%@ Register Src="~/Account/OpenAuthProviders.ascx" TagPrefix="uc" TagName="OpenAuthProviders" %>
 
 <asp:Content ContentPlaceHolderID="MainContent" runat="server">
+    <style>
+        body, .jumbotron { padding: 30px; }
+    html      {
+      overflow-y: scroll;
+    }
+    body      {
+      background: #EFEFEF;
+    }
+    ul        {
+      margin-bottom: 0;
+    }
+    .accordion  {
+      background: #FFF;
+      border-radius: 5px;
+      padding: 30px;
+    }
+
+    .question {
+      border-top: 1px solid #EEE;
+      padding: 20px;
+      cursor: pointer;
+      position: relative;
+    }
+    .question h2  {
+      font-size: 20px;
+      margin: 0;
+      color: #C00C00;
+    }
+    .question .glyphicon {
+      position: absolute;
+      right: 20px;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      color: #C00C00;
+      transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+    }
+
+    .answer   {
+      max-height: 0;
+      overflow: hidden;
+      transition: 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+    }
+    .answer p {
+      padding: 20px;
+    }
+
+    .accordion li.open .question .glyphicon {
+      transform: rotate(180deg);
+    }
+    .accordion li.open .answer  {
+      max-height: 150px;
+    }
+    </style>
     <h2><%: Title %>.</h2>
 
     <div>
@@ -17,46 +72,14 @@
                 <h4>Modifier vos paramètres de compte</h4>
                 <hr />
                 <dl class="dl-horizontal">
+                    <div id="generateMySpot" runat="server">
+                    </div>
                     <dt>Mot de passe :</dt>
                     <dd>
                         <asp:HyperLink NavigateUrl="/Account/ManagePassword" Text="[Changer]" Visible="false" ID="ChangePassword" runat="server" />
                         <asp:HyperLink NavigateUrl="/Account/ManagePassword" Text="[Créer]" Visible="false" ID="CreatePassword" runat="server" />
                     </dd>
-                    <dt>Connexions externes :</dt>
-                    <dd><%: LoginsCount %>
-                        <asp:HyperLink NavigateUrl="/Account/ManageLogins" Text="[Gérer]" runat="server" />
-
-                    </dd>
-                    <%--
-                        Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-                        See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                        for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-                        Uncomment the following blocks after you have set up two-factor authentication
-                    --%>
-                    <%--
-                    <dt>Phone Number:</dt>
-                    <% if (HasPhoneNumber)
-                       { %>
                     <dd>
-                        <asp:HyperLink NavigateUrl="/Account/AddPhoneNumber" runat="server" Text="[Ajouter]" />
-                    </dd>
-                    <% }
-                       else
-                       { %>
-                    <dd>
-                        <asp:Label Text="" ID="PhoneNumber" runat="server" />
-                        <asp:HyperLink NavigateUrl="/Account/AddPhoneNumber" runat="server" Text="[Changer]" /> &nbsp;|&nbsp;
-                        <asp:LinkButton Text="[Supprimer]" OnClick="RemovePhone_Click" runat="server" />
-                    </dd>
-                    <% } %>
-                    --%>
-
-                    <dt>Authentification à 2 facteurs :</dt>
-                    <dd>
-                        <p>
-                            Aucun fournisseur d'authentification à 2 facteurs n'est configuré. Consultez <a href="https://go.microsoft.com/fwlink/?LinkId=403804">cet article</a>
-                            pour plus de détails sur la configuration de cette application ASP.NET afin qu'elle prenne en charge l'authentification à 2 facteurs.
-                        </p>
                         <% if (TwoFactorEnabled)
                           { %> 
                         <%--
@@ -73,6 +96,68 @@
                         <% } %>
                     </dd>
                 </dl>
+                <div id="result">
+                        <asp:SqlDataSource ID="SqlDataSource1" runat="server"></asp:SqlDataSource>
+                </div>
+
+    &nbsp;<input type="hidden" id="hide" runat="server" /><input type="button" id="btn" value="Vérouiller mon choix"><asp:Button ID="submitReserv" runat="server" Text="Confirmer ma réservation" Onclick="submitReserv_Click" />
+
+    
+      
+    &nbsp;
+
+    <script>
+
+        const accordion = document.querySelector('.accordion');
+        const items = accordion.querySelectorAll('li');
+        const questions = accordion.querySelectorAll('.question');
+
+        function toggleAccordion() {
+            const thisItem = this.parentNode;
+
+            items.forEach(item => {
+                if (thisItem == item) {
+                    thisItem.classList.toggle('open');
+                    return;
+                }
+
+                item.classList.remove('open');
+            });
+        }
+
+        questions.forEach(question => question.addEventListener('click', toggleAccordion));
+
+        const btn = document.querySelector('#btn');
+        // handle click button
+        btn.onclick = function () {
+            const rbs = document.querySelectorAll('input[name="ReservRequire"]');
+            let selectedValue;
+            for (const rb of rbs) {
+                if (rb.checked) {
+                    selectedValue = rb.value;
+                    break;
+                }
+            }
+            var msg = selectedValue;
+            alert(msg);
+            var hiddenControl = '<%= hide.ClientID %>';
+            document.getElementById(hiddenControl).value = msg;
+        };
+       
+
+        
+
+        
+            
+        
+
+
+
+
+
+
+
+    </script>
             </div>
         </div>
     </div>

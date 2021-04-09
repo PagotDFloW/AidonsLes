@@ -35,7 +35,7 @@ namespace AidonsLes
             //SELECTION SPOT A NE PAS RESERVER POUR JOUR PAR DEFAUT
             string[] output = new string[4];
             int increment = 0;
-            string sql = "SELECT TOP (1) CASE WHEN ((SELECT COUNT(*) AS Expr1 FROM spot_reserv AS spot_reserv_1 WHERE(spot_reserv.date_reserv = '" + Tday + "') GROUP BY idSpot) = spots.maxPerso) THEN spot_reserv.idSpot ELSE '0' END AS Expr1 FROM spots INNER JOIN ville ON spots.idVille = ville.idVille INNER JOIN spot_reserv ON spots.idSpot = spot_reserv.idSpot WHERE spot_reserv.idUser !='"+Session["login"]+"'";
+            string sql = "SELECT TOP (1) CASE WHEN ((SELECT COUNT(*) AS Expr1 FROM spot_reserv AS spot_reserv_1 WHERE(spot_reserv.date_reserv = '" + Tday + "') GROUP BY idSpot) = spots.maxPerso) THEN spot_reserv.idSpot ELSE '0' END AS Expr1 FROM spots INNER JOIN ville ON spots.idVille = ville.idVille INNER JOIN spot_reserv ON spots.idSpot = spot_reserv.idSpot";
             SqlCommand cmd = new SqlCommand(sql, conn);
             conn.Open();
             SqlDataReader reader = cmd.ExecuteReader();

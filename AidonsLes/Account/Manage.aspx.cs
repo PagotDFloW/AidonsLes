@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Owin;
 using AidonsLes.Models;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace AidonsLes.Account
 {
@@ -78,6 +80,65 @@ namespace AidonsLes.Account
                     successMessage.Visible = !String.IsNullOrEmpty(SuccessMessage);
                 }
             }
+
+
+            generateMySpot.InnerHtml = "<div class='accordion'>" +
+                    "<sul class='list-unstyled'>";
+
+            //CONNEXION A LA BASE 
+            string connStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            SqlConnection conn = new SqlConnection(connStr);
+            conn.Open();
+            //RECUPERATION DONNEES SPOT
+            string SelecSql = "SELECT ville.Ville, spot_reserv.idReserv, spots.nom_Spot, spots.Adresse_Spot, spots.lien, spot_reserv.date_reserv, spot_reserv.idHor, horaires.HorDeb, horaires.HorFer, spot_reserv.idSpot FROM spot_reserv INNER JOIN spots ON spot_reserv.idSpot = spots.idSpot INNER JOIN ville ON spots.idVille = ville.idVille INNER JOIN horaires ON spot_reserv.idHor = horaires.idHor WHERE (spot_reserv.idUser = '"+Session["login"]+"')";
+            SqlCommand commande = new SqlCommand(SelecSql, conn);
+            SqlDataReader read = commande.ExecuteReader();
+
+            string nomSpot = "";
+            string villeSpot = "";
+            string AdressSpot = "";
+            string linkSpot = " ";
+
+            while (read.Read())
+            {
+                villeSpot = read.GetValue(0).ToString();
+                string idReserv = read.GetValue(1).ToString();
+                nomSpot = read.GetValue(2).ToString();
+                AdressSpot = read.GetValue(3).ToString();
+                linkSpot = read.GetValue(4).ToString();
+                string dateReserv = read.GetValue(5).ToString();
+                string idHor = read.GetValue(6).ToString();
+                string horDeb = read.GetValue(7).ToString();
+                string horFer = read.GetValue(8).ToString();
+                string idSpot = read.GetValue(9).ToString();
+
+                int TrueIdReserv = Convert.ToInt32(idReserv);
+                int TrueIdHor = Convert.ToInt32(idHor);
+
+                string TrueDateReserv = dateReserv.Replace("00:00:00", " ");
+
+
+
+                string HiddenSql = "DELETE spot_reserv WHERE idReserv="+TrueIdReserv+" AND idSpot= "+idSpot+" AND date_reserv=["+dateReserv+"[ AND idUser=["+Session["login"]+"[ AND idHor="+TrueIdHor ;
+
+                generateMySpot.InnerHtml += "<li>" +
+                 "<div class='question'>" +
+                   "<input id='ReservRequire' name='ReservRequire' type='radio' value='" + HiddenSql + "'/>" + "<h2><strong>" + villeSpot + "</strong> - " + nomSpot + " le "+TrueDateReserv+" de " + horDeb + "h à " + horFer + "h</h2>" +
+                   "<span class='glyphicon glyphicon-chevron-down'></span>" +
+                 "</div>" +
+                 "<div class='answer'>" +
+                   "<p><strong>Adresse : </strong>" + AdressSpot + "</br> <a href=" + linkSpot + " class='linkMaps'> lien vers google maps</a></p>";
+
+
+            }
+
+            read.Close();
+            commande.Dispose();
+            conn.Close();
+
+
+            generateMySpot.InnerHtml += "</ul>" +
+                  "</div>";
         }
 
 
@@ -123,6 +184,36 @@ namespace AidonsLes.Account
             manager.SetTwoFactorEnabled(User.Identity.GetUserId(), true);
 
             Response.Redirect("/Account/Manage");
+        }
+
+        protected void submitReserv_Click(object sender, EventArgs e) { 
+
+
+            generateMySpot.InnerHtml = "avant : " +hide.Value+"</br>";
+
+            string WatRep = hide.Value;
+            string ReplaceStr = WatRep.Replace("[", "'");
+
+            generateMySpot.InnerHtml += "après : " + ReplaceStr;
+            //CONNEXION A LA BASE 
+            string connStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            SqlConnection conn = new SqlConnection(connStr);
+            conn.Open();
+
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            string sql = "";
+
+            sql = ReplaceStr;
+            command = new SqlCommand(sql, conn);
+            adapter.DeleteCommand = new SqlCommand(sql, conn);
+            adapter.DeleteCommand.ExecuteNonQuery();
+
+            command.Dispose();
+            conn.Close();
+
+            generateMySpot.InnerHtml += "</br> Yes t'as réservé le sang";
+
         }
     }
 }
