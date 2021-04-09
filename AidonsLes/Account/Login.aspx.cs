@@ -5,6 +5,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
 using AidonsLes.Models;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace AidonsLes.Account
 {
@@ -38,7 +40,31 @@ namespace AidonsLes.Account
                 switch (result)
                 {
                     case SignInStatus.Success:
-                        Session["login"] = login.Text;
+                        //CONNEXION A LA BASE 
+                        string connStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                        SqlConnection conn = new SqlConnection(connStr);
+
+
+                        //SELECTION SPOT A NE PAS RESERVER POUR JOUR PAR DEFAUT
+                        string output = "";
+                        string sql = "SELECT Id FROM AspNetUsers WHERE UserName ='" + login.Text+"'";
+                        SqlCommand cmd = new SqlCommand(sql, conn);
+                        conn.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            output = reader.GetValue(0).ToString();
+
+
+                        }
+                        reader.Close();
+                        cmd.Dispose();
+
+                        Session["login"] = output;
+                        conn.Close();
+
+
                         IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
                         break;
                     case SignInStatus.LockedOut:
