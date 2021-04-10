@@ -113,7 +113,7 @@
                 }
             }
             var msg = selectedValue;
-            alert(msg);
+            alert("Vous avez vérouillé votre créneau à réserver");
             var hiddenControl = '<%= hide.ClientID %>';
             document.getElementById(hiddenControl).value = msg;
         };

@@ -189,12 +189,11 @@ namespace AidonsLes.Account
         protected void submitReserv_Click(object sender, EventArgs e) { 
 
 
-            generateMySpot.InnerHtml = "avant : " +hide.Value+"</br>";
+            generateMySpot.InnerHtml = "<h2>Votre créneau a été annulé avec succès</h2>";
 
             string WatRep = hide.Value;
             string ReplaceStr = WatRep.Replace("[", "'");
 
-            generateMySpot.InnerHtml += "après : " + ReplaceStr;
             //CONNEXION A LA BASE 
             string connStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             SqlConnection conn = new SqlConnection(connStr);
@@ -212,7 +211,6 @@ namespace AidonsLes.Account
             command.Dispose();
             conn.Close();
 
-            generateMySpot.InnerHtml += "</br> Yes t'as réservé le sang";
 
         }
     }

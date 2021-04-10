@@ -139,7 +139,7 @@
                 }
             }
             var msg = selectedValue;
-            alert(msg);
+            alert("Vous avez sélectionner votre créneau à annuler");
             var hiddenControl = '<%= hide.ClientID %>';
             document.getElementById(hiddenControl).value = msg;
         };
