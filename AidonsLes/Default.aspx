@@ -27,7 +27,7 @@
             </p>
         </div>
         <div class="col-md-4">
-            <h2>Reste ici si tu veux nous rejoindre l&#39;intrus</h2>
+            <h2>Reste ici si tu veux nous rejoindre l&#39;intrus haha</h2>
             <p>
                 Clique sur le bouton pour lancer ton inscription, l&#39;équipe RH s&#39;occupera de ton dossier.</p>
             <p>

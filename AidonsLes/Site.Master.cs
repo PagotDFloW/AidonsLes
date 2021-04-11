@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
@@ -49,6 +51,29 @@ namespace AidonsLes
 
         protected void master_Page_PreLoad(object sender, EventArgs e)
         {
+            //CONNEXION A LA BASE 
+            string connStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            SqlConnection conn = new SqlConnection(connStr);
+
+
+            //SELECTION SPOT A NE PAS RESERVER POUR JOUR PAR DEFAUT
+            string output = "";
+            string sql = "SELECT Id FROM AspNetUsers WHERE UserName ='" + Context.User.Identity.GetUserName()+"'";
+            SqlCommand cmd = new SqlCommand(sql, conn);
+            conn.Open();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                output = reader.GetValue(0).ToString();
+
+
+            }
+            reader.Close();
+            cmd.Dispose();
+
+            Session["login"] = output;
+            conn.Close();
             if (!IsPostBack)
             {
                 // Définir un jeton Anti-XSRF
@@ -64,6 +89,7 @@ namespace AidonsLes
                     throw new InvalidOperationException("Échec de la validation du jeton Anti-XSRF.");
                 }
             }
+
         }
 
         protected void Page_Load(object sender, EventArgs e)

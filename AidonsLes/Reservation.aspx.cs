@@ -33,8 +33,8 @@ namespace AidonsLes
             SqlConnection conn = new SqlConnection(connStr);
 
             //SELECTION SPOT A NE PAS RESERVER POUR JOUR PAR DEFAUT
-            string[] output = new string[4];
-            int increment = 0;
+            string output = "";
+            int increment = 1;
             string sql = "SELECT CASE WHEN ((SELECT COUNT(*) AS Expr1 FROM spot_reserv AS spot_reserv_1 WHERE(spot_reserv.date_reserv = '" + Tday + "')) = spots.maxPerso) THEN spot_reserv.idSpot ELSE '0' END AS Expr1 FROM spots INNER JOIN ville ON spots.idVille = ville.idVille INNER JOIN spot_reserv ON spots.idSpot = spot_reserv.idSpot";
             SqlCommand cmd = new SqlCommand(sql, conn);
             conn.Open();
@@ -42,7 +42,7 @@ namespace AidonsLes
 
             while (reader.Read())
             {
-                output[increment] = reader.GetValue(0).ToString();
+                output = reader.GetValue(0).ToString();
                 increment++;
 
             }
@@ -98,7 +98,7 @@ namespace AidonsLes
                    "<span class='glyphicon glyphicon-chevron-down'></span>" +
                  "</div>" +
                  "<div class='answer'>" +
-                   "<p><strong>Adresse : </strong>" + AdressSpot + "</br> <a href=" + linkSpot + " class='linkMaps'> lien vers google maps</a></p>" +
+                   "<p><strong>Adresse : </strong>" + AdressSpot + "</br> <a href=" + linkSpot + " class='linkMaps'> lien vers google maps</a></p>";
                    
                 i++;
 
@@ -117,7 +117,7 @@ namespace AidonsLes
         protected void submit_Click1(object sender, EventArgs e)
         {
             string dateSelec = Request["dateReserv"];
-            generateSpot.InnerHtml = "<h2>Spots disponible ce" + dateSelec + "</h2>";
+            generateSpot.InnerHtml = "<h2>Spots disponible ce " + dateSelec + "</h2>";
             generateSpot.InnerHtml += "<div class='accordion'>" +
                     "<sul class='list-unstyled'>";
 

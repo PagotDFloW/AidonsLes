@@ -29,29 +29,7 @@ namespace AidonsLes.Account
                 signInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
 
 
-                //CONNEXION A LA BASE 
-                string connStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                SqlConnection conn = new SqlConnection(connStr);
-
-
-                //SELECTION SPOT A NE PAS RESERVER POUR JOUR PAR DEFAUT
-                string output = "";
-                string sql = "SELECT Id FROM AspNetUsers WHERE Email =" + Email.Text;
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    output = reader.GetValue(0).ToString();
-
-
-                }
-                reader.Close();
-                cmd.Dispose();
-
-                Session["login"] = output;
-                conn.Close();
+                
 
                 IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
             }
@@ -59,6 +37,7 @@ namespace AidonsLes.Account
             {
                 ErrorMessage.Text = result.Errors.FirstOrDefault();
             }
+            
         }
     }
 }
